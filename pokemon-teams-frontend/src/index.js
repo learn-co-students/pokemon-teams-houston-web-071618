@@ -40,31 +40,47 @@ function parsePokemonArray(pokemonArray) {
   return pokemonHTML
 }
 
-function showPokemon(pokemonObject) {
+function showPokemon(pokemonObject, e) {
   pokemonHTML = `<li>${pokemonObject.nickname} (${pokemonObject.species}) <button class="release" data-pokemon-id="${pokemonObject.id}">Release</button></li>`
-  
-  let trainerId = pokemonObject.trainer_id
-  
+
+  let node = e.target.parentElement.children[2].innerHTML += pokemonHTML
 }
 
 function parseClicks(e) {
   const trainerId = e.target.dataset.trainerId
+  const pokemonId = e.target.dataset.pokemonId
+  
   if (trainerId) {
-    addPokemon(trainerId)
+    let pokemonCount = e.target.parentElement.children[2].childElementCount
+    if (pokemonCount < 6) {
+      addPokemon(trainerId, e)
+    } else {
+      window.alert("You can't add more than six pokemon!")
+    }
+  }
+  
+  if (pokemonId) {
+    releasePokemon(pokemonId, e)
   }
 }
 
-function releasePokemon() {
+function releasePokemon(pokemonId, e) {
+  fetch(`${POKEMONS_URL}/${pokemonId}`, {
+    method: "DELETE"
+  })
+    .then(data => data.json())
+
+  e.target.parentElement.remove()
 }
 
-function addPokemon(trainerId) {
+function addPokemon(trainerId, e) {
   fetch(POKEMONS_URL, {
     method: "POST",
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({trainer_id: trainerId})
   })
     .then(data => data.json())
-    .then(returnedPokemonObject => showPokemon(returnedPokemonObject))
+    .then(returnedPokemonObject => showPokemon(returnedPokemonObject, e))
 }
 
 main.addEventListener("click", e => parseClicks(e))

@@ -4,41 +4,40 @@ const POKEMONS_URL = `${BASE_URL}/pokemons`
 
 let main = document.getElementsByTagName("main")[0]; 
 
-
 fetch(TRAINERS_URL)
   .then(data => data.json())
-  .then(trainersArray => showAllTrainers(trainersArray))
+  .then(trainersArray => displayData(trainersArray))
   
-  
-function showAllTrainers(trainersArray) {
+function displayData(trainersArray) {
   trainersArray.forEach(trainerObject => showTrainer(trainerObject))
-} 
- 
-function showTrainer(trainerObject) {
-  let trainerName = trainerObject.name
-  let trainerId = trainerObject.id
-  let pokemonArray = trainerObject.pokemons
   
-  let pokemonHTML = parsePokemonArray(pokemonArray)
-  
-  let newDiv = `
-  <div class="card" data-id="${trainerId}"><p>${trainerName}</p>
+  function showTrainer(trainerObject) {
+    let trainerName = trainerObject.name
+    let trainerId = trainerObject.id
+    let pokemonArray = trainerObject.pokemons
+    
+    let pokemonHTML = parsePokemonArray(pokemonArray)
+    
+    let newDiv = `
+    <div class="card" data-id="${trainerId}"><p>${trainerName}</p>
     <button data-trainer-id="${trainerId}">Add Pokemon</button>
     <ul>
-      ${pokemonHTML}
+    ${pokemonHTML}
     </ul>
-  </div>`
+    </div>`
+    
+    main.innerHTML += newDiv
+  }
   
-  main.innerHTML += newDiv
-}
-
-function parsePokemonArray(pokemonArray) {
-  let pokemonHTML = ''
-  pokemonArray.forEach(pokemonObject => {
-    pokemonHTML += `<li>${pokemonObject.nickname} (${pokemonObject.species}) <button class="release" data-pokemon-id="${pokemonObject.id}">Release</button></li>`
-  })
-  return pokemonHTML
-}
+  function parsePokemonArray(pokemonArray) {
+    let pokemonHTML = ''
+    pokemonArray.forEach(pokemonObject => {
+      pokemonHTML += `<li>${pokemonObject.nickname} (${pokemonObject.species}) <button class="release" data-pokemon-id="${pokemonObject.id}">Release</button></li>`
+    })
+    return pokemonHTML
+  }
+} 
+ 
 
 function showPokemon(pokemonObject, e) {
   pokemonHTML = `<li>${pokemonObject.nickname} (${pokemonObject.species}) <button class="release" data-pokemon-id="${pokemonObject.id}">Release</button></li>`
@@ -55,7 +54,7 @@ function parseClicks(e) {
     if (pokemonCount < 6) {
       addPokemon(trainerId, e)
     } else {
-      window.alert("You can't add more than six pokemon!")
+      window.alert("You can't add more than six Pokemon!")
     }
   }
   
@@ -67,8 +66,7 @@ function parseClicks(e) {
 function releasePokemon(pokemonId, e) {
   fetch(`${POKEMONS_URL}/${pokemonId}`, {
     method: "DELETE"
-  })
-    .then(data => data.json())
+  }).then(data => data.json())
 
   e.target.parentElement.remove()
 }

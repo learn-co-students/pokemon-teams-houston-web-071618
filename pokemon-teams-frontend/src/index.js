@@ -55,12 +55,14 @@ function addPokemon(trainerId) {
   }).then(resp => resp.json()).then(data => addPokemonLocally(data, trainerId));
 }
 
+// Add Pokemon locally
 function addPokemonLocally(data, trainerId) {
   let player = Player.findPlayerById(trainerId);
   player.pokemons.push((new Pokemon(data)));
   displayAllPlayers();
 }
 
+// Redirect Valid Click Requests
 function handleClick(e) {
   let actionType = e.target.className;
   if (actionType === 'release') {

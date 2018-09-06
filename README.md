@@ -9,6 +9,7 @@ release one of their Pokemon first.
 ![Showing how the application runs from loading, adding Pokemon to a team and also releasing one](/pokemon-teams-frontend/assets/pokemon_teams.gif)
 
 ## Requirements
+
 - When a user loads the page, they should see all
   trainers, with their current team of Pokemon.
 - Whenever a user hits `Add Pokemon` and they have
@@ -18,9 +19,11 @@ release one of their Pokemon first.
   the team.
 
 ## Suggested HTML
+
 A Pokemon Card can be placed within the `<main>` tags.
 
 ### Pokemon Trainer Card
+
 ```
 <div class="card" data-id="1"><p>Prince</p>
   <button data-trainer-id="1">Add Pokemon</button>
@@ -35,12 +38,14 @@ A Pokemon Card can be placed within the `<main>` tags.
 ```
 
 ## API Routes
+
 You shouldn't need to do anything with the backend as it stands. The documentation
 below should show you how to utilize every API endpoint necessary to build the
 application. Remember, we need to make sure our Rails backend is setup, migrated,
 and is running and making requests through `http://localhost:3000`.
 
 ### Getting All Trainers and their Pokemon
+
 ```
 #=> Example Request
 GET /trainers
@@ -71,6 +76,7 @@ GET /trainers
 ```
 
 ### Adding a Pokemon
+
 ```
 #=> Example Request
 POST /pokemons
@@ -95,6 +101,7 @@ Required Body:
 ```
 
 ### Releasing a Pokemon
+
 ```
 #=> Example Request
 DELETE /pokemons/:pokemon_id
